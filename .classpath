@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/apache-tomcat-8.5.85">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/mysql-connector-java-8.0.30.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/java project/javax.mail-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/java project/activation-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-barcodes-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-barcodes-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-barcodes-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-font-asian-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-forms-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-forms-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-forms-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-hyph-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-io-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-io-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-io-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-kernel-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-kernel-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-kernel-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-layout-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-layout-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-layout-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-pdfa-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-pdfa-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-pdfa-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-pdftest-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-pdftest-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-pdftest-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-sign-7.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-sign-7.0.4-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4/itext7-sign-7.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/itext7-7.0.4"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/slf4j-api-1.7.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/jegan/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
