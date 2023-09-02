@@ -1,8 +1,9 @@
 package payslip.geons.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Employee {
+public class Employee implements Serializable {
 
 	private String empid;
 	private String fullname;
@@ -25,8 +26,15 @@ public class Employee {
 	private int sLeave;
 	private String pan;
 	private boolean payslipSent;
+	private List<Payroll> payrollist;
+	private String nextnumber;
 	
-	
+	public String getNextnumber() {
+		return nextnumber;
+	}
+	public void setNextnumber(String nextnumber) {
+		this.nextnumber = nextnumber;
+	}
 	public String getGenter() {
 		return genter;
 	}
@@ -40,7 +48,7 @@ public class Employee {
 	public void setPayslipSent(boolean payslipSent) {
 		this.payslipSent = payslipSent;
 	}
-	List<Payroll> payrollist;
+	
 	
 	public List<Payroll> getPayrollist() {
 		return payrollist;
