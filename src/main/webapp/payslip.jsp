@@ -52,15 +52,18 @@
       .paysum {
         text-decoration: underline;
       }
+      .month{
+	text-transform: uppercase;
+	}
       .textbor {
         border: 1px solid black;
-        width: 50%;
+        width: 40%;
         margin-left: 0px;
       }
       .netsal {
         border: 1px solid black;
         width: 20%;
-        margin-left: 150px;
+        margin-left: 250px;
         height: 50%;
         margin-top: 100px;
       }
@@ -90,12 +93,18 @@
 {
  	
 }
+	.foot
+	{
+	text-align:center;
+	}
+	
 	
     </style>
 </head>
 <body>
-<button class="btn btn-primary" id="printbtn" onclick="window.print()" style="margin-left: 80%">
-  Print Payslip
+<button  class="btn btn-primary" id="printbtn"  style="margin-left: 80%">
+ <a href="Downloadpdf">Print Payslip</a>
+ 
 </button>
 
 <div class="container-fluid">
@@ -103,7 +112,7 @@
         <h4 style="margin-top: 20px">Geons Logix private Limited</h4>
         <div class="top">
           <p>
-            3rd Floor Lakshmi sundaaram complex,Kaalavasal Junction,<br />
+            3rd Floor Lakshmi sundaram complex,Kaalavasal Junction,<br />
             Theni Main Road,<br />
             Madurai Tamil Nadu -625016.<br />
           </p>
@@ -117,66 +126,83 @@
       </div>
       <div class="payslip">
         <div class="payslip-header">
-          <h4 style="font-size:xx-large;"><b>PAYSLIP FOR MONTH OF  <%=  mysession.getAttribute("month")%></b> </h4>
+          <h4 style="font-size:xx-large;"><b class="month">PAYSLIP FOR MONTH OF  <%=  mysession.getAttribute("month")%></b> </h4>
          
         </div>
         <div class="payslip-details">
          <p class="paysum" style="font-size: x-large;"><strong>Employee Pay Summary</strong></p>
         </div>
         <div class="summarynetsal">
-          <div class="textbor">
-            <p
-              style="
-                margin-bottom: 0px;
-                margin-top: 10px;
-                margin-left: 10px;
-                padding-right: 20px;
-                margin-right: 20px;
-              "
-            >
-             <b> EMP CODE :</b><%= ((Employee) session.getAttribute("name")).getEmpid() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-              <b>EMP NAME :</b> <%= ((Employee) session.getAttribute("name")).getFullname() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-            <b>  DATE OF JOINING :</b><%= ((Employee) session.getAttribute("name")).getDoj() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-             <b> DESIGNATION DEPARTMENT :</b> <%= ((Employee) session.getAttribute("name")).getDesignation() %>
-            </p>
-       
-            <hr />
-            <p style="margin-top: 10px; margin-bottom: 0px; margin-left: 10px">
-            <b>  UAN :</b> <%= ((Employee) session.getAttribute("name")).getUan() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-            <b>  PF ACCOUNT NO :</b> <%= ((Employee) session.getAttribute("name")).getPf() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-            <b>  ESI NO :</b> <%= ((Employee) session.getAttribute("name")).getEsi() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-            <b>  PAN NO :</b>  <%= ((Employee) session.getAttribute("name")).getPan() %>
-            </p>
-            <hr />
-            <p style="margin-top: 10px; margin-bottom: 0px; margin-left: 10px">
-             <b> CASUAL LEAVE :</b><%= ((Employee) session.getAttribute("name")).getcLeave() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
-             <b> SICK LEAVE :</b><%= ((Employee) session.getAttribute("name")).getsLeave() %>
-            </p>
-            <p style="margin-top: 0px; margin-bottom: 5px; margin-left: 10px">
-            <b>  PRIVELEGE LEAVE :</b><%= ((Employee) session.getAttribute("name")).getpLeave() %>
-            </p>
-          </div>
+         <table class="textbor">
+                <tr>
+                    <td> <p
+                      style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                       <b> EMP CODE :
+                      </p></td>
+                    <td></b><%= ((Employee) session.getAttribute("name")).getEmpid() %></td>
+                </tr>
+                <tr><td><p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                    <b>EMP NAME :</b>
+                  </p></td>
+                <td> <%= ((Employee) session.getAttribute("name")).getFullname() %></td>
+    
+                </tr>
+                <tr>
+                    <td><p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                        <b>  DATE OF JOINING :</b>
+                        </p></td>
+                    <td><%= ((Employee) session.getAttribute("name")).getDoj() %></td>
+                </tr>
+                <tr><td>  <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                    <b> DESIGNATION:</b> 
+                   </p>
+              </td>
+                <td><%= ((Employee) session.getAttribute("name")).getDesignation() %></td></tr>
+                <td><p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px"><b> DEPARTMENT:</b> </p></td>
+  <td><%= ((Employee) session.getAttribute("name")).getDepartment() %></td>
+</tr>
+<tr>
+  <td><p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px"><b>GENDER: </b></p></td>
+  <td><%= ((Employee) session.getAttribute("name")).getGenter() %></td>
+              <tr><td><hr></td><td><hr></td></tr>
+                <tr><td><p style="margin-top: 10px; margin-bottom: 0px; margin-left: 10px">
+                    <b>  UAN :</b>
+                    </p></td>
+                <td> <%= ((Employee) session.getAttribute("name")).getUan() %></td></tr>
+                <tr><td><p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                    <b>  PF ACCOUNT NO :</b>
+                    </p></td>
+                <td> <%= ((Employee) session.getAttribute("name")).getPf() %></td></tr>
+                <tr><td> <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                    <b>  ESI NO :</b> 
+                    </p></td>
+                <td><%= ((Employee) session.getAttribute("name")).getEsi() %></td></tr>
+                <tr><td>  <p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                    <b>  PAN NO :</b>  
+                    </p></td>
+                <td><%= ((Employee) session.getAttribute("name")).getPan() %></td></tr>
+                <tr><td><hr></td><td><hr></td></tr>
+                <tr><td> <p style="margin-top: 10px; margin-bottom: 0px; margin-left: 10px">
+                    <b> CASUAL LEAVE :</b>
+                   </p></td>
+                <td><%= ((Employee) session.getAttribute("name")).getcLeave() %></td></tr>
+                <tr><td><p style="margin-top: 0px; margin-bottom: 0px; margin-left: 10px">
+                    <b> SICK LEAVE :</b>
+                   </p></td>
+                <td><%= ((Employee) session.getAttribute("name")).getsLeave() %></td></tr>
+                <tr><td>  <p style="margin-top: 0px; margin-bottom: 5px; margin-left: 10px">
+                    <b>  PRIVELEGE LEAVE :</b>
+                    </p></td>
+                <td><%= ((Employee) session.getAttribute("name")).getpLeave() %></td></tr>
+            </table>
+           
           <div class="netsal">
             <h4
               style="text-align: center; margin-top: 20px; margin-bottom: 20px"
             >
             <b>  Net total</b>
             </h4>
-            <div class=" scolor"><span id="netvalue" class="nettotal"><%= ((CtcForm) session.getAttribute("pay")).getTotalGrossSalaryComponentsA()/12 %></span></div>
+            <div class=" scolor"><span id="netvalue" class="nettotal"><%= (int)((CtcForm) session.getAttribute("pay")).getTotalGrossSalaryComponentsA()/12 %></span></div>
             <h5
               style="text-align: center; margin-top: 20px; margin-bottom: 20px"
             >
@@ -187,20 +213,19 @@
        
 
         
-
 <table class="table "  >
 
 <thead>
 
   <tr class="th" style="height:80%;" >
 
-  <th  class="table-primary" ><h1 style="color:black;font-size:12px;text-color:black;"><b>EARNING</h1></b></th>
+  <th  class="table-primary" ><h1 style="color:black;font-size:14px;text-color:black;"><b>EARNINGS</h1></b></th>
 
-  <th class="table-primary"  ><h1 style="color:black;font-size:12px;text-color:black; "><b>INR</h1></b></th>
+  <th class="table-primary"  ><h1 style="color:black;font-size:14px;text-color:black; "><b>INR</h1></b></th>
 
-  <th class="table-primary"  ><h1 style="color:black;font-size:12px;text-align: center;text-color:black; "><b>DEDUCTION </h1></b></th>
+  <th class="table-primary"  ><h1 style="color:black;font-size:14px;text-color:black; "><b>DEDUCTION </h1></b></th>
 
-  <th class="table-primary"  ><h1 style="color:black;font-size:12px;text-color:black; "><b>INR </h1></b></th>
+  <th class="table-primary"  ><h1 style="color:black;font-size:14px;text-color:black; "><b>INR </h1></b></th>
 
   </tr>
 
@@ -212,9 +237,9 @@
 
   <td   style="font-size:13px;">BASIC</td>
 
-  <td></td>
+  <td><%= ((CtcForm) session.getAttribute("pay")).getBasic()/12 %></td>
 
-  <td  style="font-size:13px;text-align: center;">PF AMOUNT</td>
+  <td  style="font-size:13px;">PF AMOUNT</td>
 
   <td><%= ((CtcForm) session.getAttribute("pay")).getEmployeesContributionToPF()/12 %></td>
 
@@ -226,52 +251,40 @@
 
   <td><%= ((CtcForm) session.getAttribute("pay")).getHouseRentAllowance()/12 %></td>
 
-  <td  style="font-size:13px;text-align: center;">PROFESSIONAL TAX</td>
+  <td  style="font-size:13px;">PROFESSIONAL TAX</td>
 
   <td><%= ((Employee) session.getAttribute("name")).getPtax() %></td>
-
-  </tr>
-   <tr class="" style="background-color:white;">
-
-  <td   style="font-size:13px;"></td>
-
-  <td></td>
-
-  <td  style="font-size:13px;text-align: center;">ESI</td>
-
-  <td><%= ((CtcForm) session.getAttribute("pay")).getEmployersContributionToESI()/12 %></td>
 
   </tr>
 
   <tr class="" style="background-color:white;">
 
   <td style="font-size:13px;" >OTHER ALLOWANCE</td>
-
+  
   <td><%= ((CtcForm) session.getAttribute("pay")).getOtherAllowance()/12 %></td>
 
-  <td></td>
+  <td style="font-size:13px;" >ESI</td>
 
-  <td></td>
+  <td><%= ((CtcForm) session.getAttribute("pay")).getEmployersContributionToESI()/12 %></td>
 
   </tr>
 
   <tr class="table-primary" style="background-color:#008080;">
 
-  <td class="" ><h1 style="color:black;font-size:13px;"><%= ((CtcForm) session.getAttribute("pay")).getTotalGrossSalaryComponentsA()/12 %></h1></td>
+  <td class="" ><h1 style="color:black;font-size:13px;">GROSS TOTAL</h1></td>
+  
+  <td class="" ><%= ((CtcForm) session.getAttribute("pay")).getTotalGrossSalaryComponentsA()/12 %></td>
 
-  <td class="" ></td>
-
-  <td class="" ><h1 style="color:black;font-size:13px; text-align:center">DEDUCTION TOTAL</h1></td>
-
+  <td class="" ><h1 style="color:black;font-size:13px;">DEDUCTION TOTAL</h1></td>
+  
   <td class="" ><%= (((CtcForm) session.getAttribute("pay")).getEmployersContributionToESI()/12)+(((CtcForm) session.getAttribute("pay")).getEmployeesContributionToPF()/12) +(((Employee) session.getAttribute("name")).getPtax()) %></td>
 
   </tr></tbody>  
-  </table>
-  <div>NET TOTAL : <%= ((CtcForm) session.getAttribute("pay")).getTotalGrossSalaryComponentsA()/12 %>  <span id="words"></span></div>
+  </table>  <div>NET TOTAL : <%= (int)((CtcForm) session.getAttribute("pay")).getTotalGrossSalaryComponentsA()/12 %> ( <span id="words"></span> only)</div>
       </div>
       
       
-
+<p style="text-align:center; margin-top:20px;">This is Computer generated Payslip. No Signature required</p>
     </div>
 
     <!-- Bootstrap JS -->

@@ -5,18 +5,15 @@
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
+    <%
+    if (session.getAttribute("listofemployee") == null)  {
+        response.sendRedirect("LogoutServlet"); 
+    }
+%>
   <% HttpSession mysession = request.getSession(); %>
-  
- 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	 <%
-    if (mysession.getAttribute("listofemployee") == null)  {
-        response.sendRedirect("login.jsp"); 
-    }
-%>
   	<link rel="icon" type="image/x-icon" href="image/geon.jpg">
   	<title>Payroll</title>
     <meta charset="utf-8">
@@ -79,7 +76,7 @@ input:focus, textarea:focus {
 	text-transform: uppercase;
 	font-size: 15px !important;
 	font-weight: 400;
-	height: 40px;
+	height: 43px;
 	cursor: pointer
 }
 
@@ -93,9 +90,13 @@ button:focus {
 	box-shadow: none !important;
 	outline-width: 0
 }
+.icons{
+text-align:center;
+}
 #foot{
 		  padding-top:85%;
 		}
+
 </style>
                                 <!--  ----------import the package------  -->
          
@@ -114,11 +115,11 @@ button:focus {
 	          <li>
 	              <a href="addEmp.jsp">Add Emp</a>
 	          </li>
-	          <li class="active">
-              <a href="Edit.jsp" data-toggle="collapse" aria-expanded="false">Edit Emp</a>
+	          <li >
+              <a href="Edit.jsp" >Edit Emp</a>
 	          </li>
-	          <li>
-              <a href="Gross.jsp">Payslips</a>
+	          <li class="active">
+              <a href="admin.jsp" data-toggle="collapse" aria-expanded="false">Payslips</a>
 	          </li>
 	          <li>
               <a href="LogoutServlet">Signout</a>
@@ -133,11 +134,10 @@ button:focus {
 
 	      </div>
     	</nav>
-
         <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-0">
+      <div id="content" class="p-4 p-md-1">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light  sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
 
             <button type="button" id="sidebarCollapse" class="btn btn-primary">
@@ -159,7 +159,6 @@ button:focus {
           </div>
         </nav>
          <!-- edit  -->
-         <h5 class="text-center" style="color: #00BCD4;">Edit Employee</h5>
 		<div class="table-responsive small container ">
       
       <table class="table" id="editemp" >
@@ -170,15 +169,16 @@ button:focus {
               <th scope="col">Name</th>
               <th scope="col">Gender</th>
               <th scope="col">Designation</th>
-              <th scope="col">Department</th>
-             <th scope="col">Actions</th>
+              <th scope="col">Depatrment</th>
+              <th scope="col">Generate Payslip</th>
+          
              
            </tr>  
          </thead>     
           
     <tbody>
          
-  <% List data=(List) mysession.getAttribute("listofemployee");
+  <% List<Employee> data=(List) mysession.getAttribute("listofemployee");
   
   
   
@@ -195,25 +195,19 @@ button:focus {
 	<td width="168"><%=emp.getFullname()%></td>
 	<td width="119"><%=emp.getGenter()   %>
 	<td width="119"><%=emp.getDesignation()%></td>
-		<td width="119"><%=emp.getDepartment()%></td>
-	<td>
-	<a href="Editemp?empid=<%=emp.getEmpid()%>"  
-	 >
-	<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256"
-style="fill:#000000;">
-<g fill="#94d82d" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M19.17188,2c-0.72375,0 -1.4475,0.27562 -2,0.82813l-1.17187,1.17188l4,4l1.17188,-1.17187c1.104,-1.104 1.104,-2.895 0,-4c-0.5525,-0.5525 -1.27625,-0.82812 -2,-0.82812zM14.5,5.5l-11.5,11.5v4h4l11.5,-11.5z"></path></g></g>
-</svg>
-</a><a href="deleteemp?empid=<%=emp.getEmpid()%>"  
-	 >
-<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256"
-style="fill:#000000;">
-<g fill="#fa5252" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path></g></g>
-</svg>
-</a>
-</td>  
-  </tr>
+	<td width="119" class="icons"><%=emp.getDepartment()%></td>
+	<%if(emp.isPayslipSent()) 
+	{%>
+		
+	
+	<td width="119" class="icons"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
+<path fill="#c8e6c9" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path><path fill="#4caf50" d="M34.586,14.586l-13.57,13.586l-5.602-5.586l-2.828,2.828l8.434,8.414l16.395-16.414L34.586,14.586z"></path>
+</svg></a></td>
+	<%}else{ %>
+<td width="119" class="icons"><a href="monthctc?empid=<%=emp.getEmpid()%>"><img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/money-transfer.png" alt="money-transfer"/></a></td>  </tr>
   
   <%}%>
+  <%} %>
     </tbody>
      </table>
 

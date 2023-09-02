@@ -3,17 +3,15 @@ function validate(val) {
     v2 = document.getElementById("fullname");
     v3 = document.getElementById("email");
     v4 = document.getElementById("doj");
-    v5 = document.getElementById("ptax");
-    v6 = document.getElementById("pf");
-    v7 = document.getElementById("aadhar");
-    v8 = document.getElementById("designation");
-    v9 = document.getElementById("department");
-    v10 = document.getElementById("pan");
-    v11 = document.getElementById("cLeave");
-    v12 = document.getElementById("sLeave");
-    v13 = document.getElementById("pLeave");
-    v14 = document.getElementById("ctc");
-    v15 = document.getElementById("password");
+    v5 = document.getElementById("aadhar");
+    v6 = document.getElementById("pan");
+    v7 = document.getElementById("cLeave");
+    v8 = document.getElementById("sLeave");
+    v9 = document.getElementById("pLeave");
+    v10 = document.getElementById("ctc");
+    v11 = document.getElementById("pf");
+    v12 = document.getElementById("uan");
+    v13 = document.getElementById("password");
 
     flag1 = true;
     flag2 = true;
@@ -28,8 +26,7 @@ function validate(val) {
     flag11 = true;
     flag12 = true;
     flag13 = true;
-    flag14 = true;
-    flag15 = true;
+  
 
     if(val>=1 || val==0) {
         if(v1.value == "") {
@@ -162,28 +159,9 @@ function validate(val) {
             flag13 = true;
         }
     }
-    if(val>=14 || val==0) {
-        if(v14.value == "") {
-            v14.style.borderColor = "red";
-            flag14 = false;
-        }
-        else {
-            v14.style.borderColor = "green";
-            flag14 = true;
-        }
-    }
-    if(val>=15 || val==0) {
-        if(v15.value == "") {
-            v15.style.borderColor = "red";
-            flag15 = false;
-        }
-        else {
-            v15.style.borderColor = "green";
-            flag15 = true;
-        }
-    }
+   
 
-    flag = flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag7 && flag8 && flag9 && flag10 && flag11 && flag12 && flag13 && flag14 && flag15;
+    flag = flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag7 && flag8 && flag9 && flag10 && flag11 && flag12 && flag13;
 
     return flag;
 }

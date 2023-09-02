@@ -7,12 +7,12 @@
 <html lang="en">
 <head>
  <%@page import="payslip.geons.dto.Employee"%>
- <% HttpSession mysession = request.getSession(); %> 
- 
- 
- <%CtcForm ctccal=(CtcForm) mysession.getAttribute("ctccalc");%>
-  <%Employee emp=(Employee) mysession.getAttribute("addemp");%>
-<title>Admin Dash</title>
+ <% HttpSession mysession = request.getSession(false); %> 
+ <%session.setAttribute("name",session.getAttribute("name")); %>
+ <%Employee employee=(Employee)mysession.getAttribute("employee"); %>
+ <% CtcForm ctcForm =(CtcForm) mysession.getAttribute("ctcForm"); %>
+<link rel="icon" type="image/x-icon" href="image/geon.jpg">
+  	<title>Payroll</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,6 +24,7 @@
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="css/style.css">
+
 <style>
 body {
 	color: #000;
@@ -106,14 +107,15 @@ button:focus {
 	
 	<div class="wrapper d-flex align-items-stretch">
 		<nav id="sidebar">
-			<div class="p-4 pt-3 ">
+			<div class="p-4 pt-3">
 				<a href="#" class="img logo rounded-circle  mb-3"
 					style="background-image: url(image/geon.jpg);"></a>
 				<ul class="list-unstyled components ">
 					<li><a href="admin.jsp">Home</a></li>
-					<li class="active"><a href="addEmp.jsp" data-toggle="collapse"
-						aria-expanded="false">Add Emp</a></li>
+					<li><a href="addEmp.jsp" 
+						>Add Emp</a></li>
 					<li><a href="Edit.jsp">Edit Emp</a></li>
+					<li><a href="Gross.jsp">Payslips</a></li>
 					<li><a href="LogoutServlet">Signout</a></li>
 				</ul>
 
@@ -132,10 +134,10 @@ button:focus {
 		</nav>
 
 		<!-- Page Content  -->
-		<div id="content" class="p-4 p-md-1">
+		<div id="content" class="p-4 p-md-1 sticky-top">
 
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
+				<div class="container-fluid sticky-top">
 
 					<button type="button" id="sidebarCollapse" class="btn btn-primary">
 						<i class="fa fa-bars"></i> <span class="sr-only">Toggle
@@ -158,7 +160,7 @@ button:focus {
 				</div>
 			</nav>
 			<div class="container">
-			 <form action="CtcController">
+		 <form action="salaryCalculation" method="post">	
       <table class="table">
         <tr>
           <td
@@ -171,22 +173,46 @@ button:focus {
         </tr>
         <tr>
           <td width="26%"><b>Name </b></td>
-          <td colspan="2"><%= emp.getFullname()%></td>
+          <td colspan="2"><%=employee.getFullname() %></td>
         </tr>
         <tr>
-          <td><b>Designation</b></td>
-          <td colspan="2"> <%= emp.getDesignation()%></td>
+          <td><b>Uan</b></td>
+          <td colspan="2"><%=employee.getUan() %></td>
         </tr>
-        <tr>
-        <td style="text-align: center; background-color: rgb(172, 224, 248)">
+         <tr>
+        <td >
             <b>CTC</b>
            
           </td>
-          <td colspan="2"><%= ctccal.getTotalGrossSalaryComponentsA()%></td>
+          
+          <td colspan="2"> <% 
+			
+			   out.print(session.getAttribute("constctc"));
+			
+			%>
+          </td>
          
           
           
         </tr>
+         <tr>
+          <td style=" background-color: rgb(172, 224, 248);"><b>Monthly Gross/ Leaves</b></td>
+          <td colspan="2">
+         
+          <input type="number" style=" width:25%; min="0"  border-color:black;" name="monthSAL"; placeholder="Monthly Gross"
+           value="<%if(request.getAttribute("monthSAL")!=null) {
+        	  out.print(request.getAttribute("monthSAL"));
+          }
+          %>">
+          
+          &nbsp;<input type="number" style=" width:25%; border-color:black;" min="0" name="leave";  placeholder="Enter Leaves" value="0">
+          <button type="submit" formaction="salaryCalculation">submit</button>
+         
+         
+          </td>
+        </tr>
+        
+       
         <tr>
           <td style="background-color: rgb(172, 224, 248)">
             <b>Salary Components</b>
@@ -199,73 +225,179 @@ button:focus {
           </td>
         </tr>
         <tr>
-          <td>Basic</td>
-          <td> <%= ctccal.getBasic()%></td>
-          <td><%= ctccal.getBasic()/12%></td>
+          <th>Basic</th>
+          <td>
+			 <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getBasic());
+			} 
+			%>
+          </td>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getBasic()/12);
+			} 
+			%></td>
         </tr>
         <tr>
-          <td>House Rent Allowance</td>
-          <td><%= ctccal.getHouseRentAllowance()%></td>
-          <td><%= ctccal.getHouseRentAllowance()/12%></td>
+          <th>House Rent Allowance</th>
+          <td>
+           <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getHouseRentAllowance());
+			} 
+			%></td>
+          <td>
+           <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getBasic()/12);
+			} 
+			%></td>
         </tr>
         <tr>
-          <td>Other Allowance</td>
-          <td><%= ctccal.getOtherAllowance()%></td>
-          <td><%= ctccal.getOtherAllowance()/12%></td>
+          <th>Other Allowance</th>
+          <td>
+           <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getOtherAllowance());
+			} 
+			%></td>
+          <td>
+           <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getOtherAllowance()/12);
+			} 
+			%>
+          </td>
         </tr>
         <tr>
           <td style="background-color: rgb(172, 224, 248)">
             <b>Total Gross Salary Components (A)</b>
           </td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalGrossSalaryComponentsA()%></td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalGrossSalaryComponentsA()/12%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalGrossSalaryComponentsA());
+			} 
+			%></td>
+          <td style="background-color: rgb(172, 224, 248)">
+           <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalGrossSalaryComponentsAMonth());
+			} 
+			%>
+          </td>
         </tr>
         <tr>
-          <td>Employer's Contribution to PF</td>
-          <td><%= ctccal.getEmployersContributionToPF()%></td>
-          <td><%= ctccal.getEmployersContributionToPF()/12%></td>
+          <th>Employer's Contribution to PF</th>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployersContributionToPF());
+			} 
+			%></td>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployeesContributionToPF()/12);
+			} 
+			%></td>
         </tr>
         <tr>
-          <td>Employer's Contribution to ESI</td>
-          <td><%= ctccal.getEmployersContributionToESI()%></td>
-          <td><%= ctccal.getEmployersContributionToESI()/12%></td>
+          <th>Employer's Contribution to ESI</th>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployersContributionToESI());
+			} 
+			%></td>
+          <td>
+           <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployersContributionToESI()/12);
+			} 
+			%></td>
         </tr>
         <tr>
           <td style="background-color: rgb(172, 224, 248)">
             <b>Total Components (B)</b>
           </td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalComponentsB()%></td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalComponentsB()/12%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalComponentsB());
+			} 
+			%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalComponentsB()/12);
+			} 
+			%></td>
         </tr>
 
         <tr>
           <td style="background-color: rgb(172, 224, 248)"><b>(A)- (B)</b></td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getAB()%></td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getAB()/12%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getAB());
+			} 
+			%></td>
+          <td style="background-color: rgb(172, 224, 248)"><% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getAB()/12);
+			} 
+			%></td>
         </tr>
         <tr>
-          <td>Employee's Contribution to PF</td>
-          <td><%= ctccal.getEmployeesContributionToPF()%></td>
-          <td><%= ctccal.getEmployeesContributionToPF()/12%></td>
+          <th>Employee's Contribution to PF</th>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployeesContributionToPF());
+			} 
+			%></td>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployeesContributionToPF()/12);
+			} 
+			%></td>
         </tr>
         <tr>
-          <td>Employee's Contribution to ESI</td>
-          <td><%= ctccal.getEmployeesContributionToESI()%></td>
-          <td><%= ctccal.getEmployeesContributionToESI()/12%></td>
+          <th>Employee's Contribution to ESI</th>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployeesContributionToESI());
+			} 
+			%></td>
+          <td> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getEmployeesContributionToESI()/12);
+			} 
+			%></td>
         </tr>
         <tr>
           <td style="background-color: rgb(172, 224, 248)">
             <b>Total Deduction (C)</b>
           </td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalDeductionC()%></td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalDeductionC()/12%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalDeductionC());
+			} 
+			%></td>
+          <td style="background-color: rgb(172, 224, 248)"><% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalDeductionC()/12);
+			} 
+			%></td>
         </tr>
         <tr>
           <td style="background-color: rgb(172, 224, 248)">
             <b>Total Net Salary (A) - (C)</b>
           </td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalNetSalaryAC()%></td>
-          <td style="background-color: rgb(172, 224, 248)"><%= ctccal.getTotalNetSalaryAC()/12%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalNetSalaryAC());
+			} 
+			%></td>
+          <td style="background-color: rgb(172, 224, 248)"> <% 
+			if (ctcForm!=null) {
+			   out.print(ctcForm.getTotalNetSalaryAC()/12);
+			} 
+			%></td>
         </tr>
         <tr>
           <td colspan="3">
@@ -276,14 +408,14 @@ button:focus {
             management at any time
           </td>
         </tr>
+        
+        
+      
       </table>
-      
-     
-      <button type="submit" class="btn btn-primary" style="margin-left:80%; background-color:DodgerBlue;">submit</button>
-      </form>
-     
-      
-      
+       <button type="submit" formaction="Payrollgen" class="btn btn-primary" style="margin-left:80%; background-color:DodgerBlue;">Submit</button>
+        </form>
+        
+      <a href="Gross.jsp" class="btn btn-primary">Back</a>
      
       
     </div>

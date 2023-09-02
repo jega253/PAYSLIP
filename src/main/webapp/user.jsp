@@ -1,10 +1,10 @@
  <%@page import="payslip.geons.dto.Employee"%>
-<%@page import="payslip.geons.dto.Payroll"%> 
+<%@page import="payslip.geons.dto.Payroll"%>
 
 <!doctype html>
 <html lang="en">
   <head>
-  <% HttpSession mysession = request.getSession(); %> 
+  <% HttpSession mysession = request.getSession(false); %> 
 <%
    
     if (mysession == null ) {
@@ -41,10 +41,13 @@
 	            <a href="#"><span class="fa fa-home mr-3"></span>Dashboard</a>
 	          </li>
 	          <li>
-	              <a href="pdfgen"><span class="fa fa-user mr-3"></span>View payslips</a>
+	              <a href="Paysliplist.jsp"><span class="fa fa-user mr-3"></span>payslip List</a>
+	          </li>
+	           <li>
+	              <a href="createpassword.jsp"><span class="fa fa-user mr-3"></span>Create Password</a>
 	          </li>
 	          <li>
-              <a href="LogoutServlet"><span class="fa fa-briefcase mr-3"></span>Logout</a>
+              <a href="LogoutServlet"><span class="fa fa-briefcase mr-3"></span>Signout</a>
 	          </li>
 	        </ul>
 
@@ -61,7 +64,7 @@
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
           <h2 class="mb-4">Welcome,<%= ((Employee) session.getAttribute("name")).getFullname() %>!</h2>
-             <p class="text-center font-weight-bold  text-primary fs-5">Payslip For The Month Of </p>
+             <p class="text-center font-weight-bold  text-primary fs-5">Dashboard </p>
            <p></p>
            
            <table class="table table-sm">
@@ -69,75 +72,66 @@
     <tr class="table-primary text-primary">
       <th scope="col">EARNINGS</th>
       <th scope="col">Values</th>
-      <th scope="col"></th>
+      
     </tr>
   </thead>
   <tbody>
     <tr>
               <th>EMP CODE</td>
               <td><%= ((Employee) session.getAttribute("name")).getEmpid() %></td>
-              <td></td>
+            
             </tr>
              <tr>
               <th>EMP NAME</th>
               <td><%= ((Employee) session.getAttribute("name")).getFullname() %></td>
-              <td></td>
+            
             </tr>
             <tr>
               <th>DATE OF JOINING</th>
                <td><%= ((Employee) session.getAttribute("name")).getDoj() %></td>
-              <td></td>
+              
             </tr>
             <tr>
               <th>DESIGNATION</th>
               <td><%= ((Employee) session.getAttribute("name")).getDesignation() %></td>
-              <td></td>
+            
             </tr>
             <tr>
               <th>DEPARTMENT</th>
                <td><%= ((Employee) session.getAttribute("name")).getDepartment() %></td>
-              <td></td>
+              
             </tr>
             <tr>
               <th>GENDER</th>
                <td><%= ((Employee) session.getAttribute("name")).getGenter() %></td>
-              <td></td>
+            
             </tr>    
             
-  </tbody>
-</table>
+
                <!-- ----------------------------second table----------------------------------  -->
                
-               <table class="table table-sm">
-  <thead>
-    <tr class="table-primary text-primary">
-      <th scope="col">EARNINGS</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr>
-              <th>UAN</th>
-               <td><%= ((Employee) session.getAttribute("name")).getUan() %></td>
-              <td></td>
-            </tr>
     <tr>
-              <th>PF ACCOUNT NO</td>
-              <td></td>
-              <td><%= ((Employee) session.getAttribute("name")).getPf() %></td>
+              <th>UAN NO</td>
+              <td><%= ((Employee) session.getAttribute("name")).getUan() %></td>
+            
             </tr>
              <tr>
+              <th>PF ACCOUNT NO</th>
+              <td><%= ((Employee) session.getAttribute("name")).getPf() %></td>
+            
+            </tr>
+            <tr>
               <th>ESI NO</th>
-              <td></td>
-              <td><%= ((Employee) session.getAttribute("name")).getEsi() %></td>
+               <td><%= ((Employee) session.getAttribute("name")).getEsi()%></td>
+              
             </tr>
             <tr>
               <th>PAN NO</th>
-               <td><%= ((Employee) session.getAttribute("name")).getPan() %></td>
-              <td></td>
+              <td><%= ((Employee) session.getAttribute("name")).getPan() %></td>
+            
             </tr>
-             
+           
+            
   </tbody>
 </table>
     <!-- ----------------------------third table----------------------------------  -->
@@ -145,28 +139,29 @@
                <table class="table table-sm">
   <thead>
     <tr class="table-primary text-primary">
-      <th scope="col">LEAVE DETAILS</th>
+      <th scope="col">LEAVES</th>
+       <th scope="col">TOTAL LEAVE</th>
       <th scope="col">AVAIL LEAVE</th>
        <th scope="col">BALANCE LEAVE</th>
-       <th scope="col">TOTAL LEAVE</th>
+      
     </tr>
   </thead>
   <tbody>
     <tr>
              
-              <th>CASUAL LEAVE BALANCE</th>
+              <th>CASUAL LEAVE </th>
               <td><%= ((Employee) session.getAttribute("name")).getcLeave() %></td>
               <td></td>
               <td></td>
             </tr>
             <tr>
-              <th>SICK LEAVE BALANCE</th>
+              <th>SICK LEAVE </th>
                <td><%= ((Employee) session.getAttribute("name")).getsLeave() %></td>
               <td></td>
               <td></td>
             </tr>
             <tr>
-              <th>PRIVILEGE LEAVE BALANCE</th>
+              <th>PRIVILEGE LEAVE </th>
                <td><%= ((Employee) session.getAttribute("name")).getpLeave()  %></td>
               <td></td>
               <td></td>
