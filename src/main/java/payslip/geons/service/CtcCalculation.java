@@ -1,6 +1,6 @@
 package payslip.geons.service;
 
-import payslip.geons.dto.Ctc;
+
 import payslip.geons.dto.CtcForm;
 
 public class CtcCalculation {
@@ -16,9 +16,9 @@ public class CtcCalculation {
 	
 	public CtcForm ctcCalculation() {
 		
-		if(this.ctc>=72000||this.ctc<=180000) {
+		if(this.ctc<=180000) {
 			return basci();
-		}else if(this.ctc>=180012||this.ctc<=251988) {
+		}else if(this.ctc>=180012&&this.ctc<=251988) {
 			return restricted();
 		}else {
 			return breakup();
@@ -29,7 +29,8 @@ public class CtcCalculation {
 
 	public CtcForm basci() {
        CtcForm ctcc = new CtcForm();
-		System.out.println("hi");
+       ctcc.setCtc(this.ctc);
+		
 		double annualBasic = (basic / 100.0) * ctc;
 		ctcc.setBasic(annualBasic);
 		double annualhouseRentAllowance = (hra / 100.0) * ctc;
@@ -44,7 +45,7 @@ public class CtcCalculation {
 		ctcc.setTotalGrossSalaryComponentsA(annualtotalGrossSalaryComponents);
 		double monthlytotalGrossSalaryComponents = (monthBasic + monthhouseRentAllowance + monthotherAllowance);
 		
-	
+		ctcc.setTotalGrossSalaryComponentsAMonth(monthlytotalGrossSalaryComponents);
 		
 		double annualemployerContributiontoPF =  (12/100.0)*annualBasic;
 		ctcc.setEmployersContributionToPF(annualemployerContributiontoPF);
@@ -80,7 +81,7 @@ public class CtcCalculation {
 	
 	public  CtcForm breakup() {
 		 CtcForm  ctcc= new CtcForm();
-
+		 ctcc.setCtc(this.ctc);
 		 double annualBasic = (basic / 100.0) * ctc;
 		 ctcc.setBasic(annualBasic);
 		 double annualhouseRentAllowance = (hra / 100.0) * ctc;
@@ -94,6 +95,7 @@ public class CtcCalculation {
 		 double annualtotalGrossSalaryComponents = (annualBasic + annualhouseRentAllowance + annualotherAllowance);
 		 ctcc.setTotalGrossSalaryComponentsA(annualtotalGrossSalaryComponents);
 		 double monthlytotalGrossSalaryComponents = (monthBasic + monthhouseRentAllowance + monthotherAllowance);
+		 ctcc.setTotalGrossSalaryComponentsAMonth(monthlytotalGrossSalaryComponents);
 		 double annualemployerContributiontoPF =  21600;
 		 ctcc.setEmployersContributionToPF(annualemployerContributiontoPF);
 
@@ -122,6 +124,7 @@ public class CtcCalculation {
 
 	public  CtcForm restricted() {
 		CtcForm ctcc = new  CtcForm();
+		 ctcc.setCtc(this.ctc);
 		double annualBasic = (basic / 100.0) * ctc;
 		ctcc.setBasic(annualBasic);
 		double annualhouseRentAllowance = (hra / 100.0) * ctc;
@@ -135,7 +138,7 @@ public class CtcCalculation {
 		double annualtotalGrossSalaryComponents = (annualBasic + annualhouseRentAllowance + annualotherAllowance);
 		ctcc.setTotalGrossSalaryComponentsA(annualtotalGrossSalaryComponents);
 		double monthlytotalGrossSalaryComponents = (monthBasic + monthhouseRentAllowance + monthotherAllowance);
-
+		ctcc.setTotalGrossSalaryComponentsAMonth(monthlytotalGrossSalaryComponents);
 		
 		double annualemployerContributiontoPF =  (12/100.0)*annualBasic;
 		ctcc.setEmployersContributionToPF(annualemployerContributiontoPF);

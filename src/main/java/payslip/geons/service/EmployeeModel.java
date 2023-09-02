@@ -15,8 +15,8 @@ public class EmployeeModel {
 
 	public List<String> getlastmonthpayslip(String id) throws Exception {
 		Dao dao = new Dao();
-		 LocalDate currentDate = LocalDate.now();
-		 String month=String.valueOf(currentDate.getMonthValue()-1);
+		
+		
 		Connection connection=dao.getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement("SELECT ctc FROM payroll_db.ctc where empid=?");
 		PreparedStatement preparedStatement2 = connection.prepareStatement("Select period from payroll_db.payroll where empid=? ");
@@ -33,6 +33,9 @@ public class EmployeeModel {
 		List<String> list = new ArrayList<>();
 		list.add(ctc);
 		list.add(period);
+		
+		connection.close();
+		
 		return list;
 		
 	}

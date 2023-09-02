@@ -6,16 +6,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
+import payslip.geons.dto.Ctc;
 import payslip.geons.dto.CtcForm;
 import payslip.geons.dto.Employee;
 import payslip.geons.dto.Payroll;
 
 public class Crud {
+	
+	
 	private  Dao dao = new Dao();
 	public  void insertempdetails(Employee employee, CtcForm ctcForm) throws Exception {
-	    String query = "INSERT INTO employee (empid, fullname, email, password, role, doj, esi, pf, ptax, hra, aadhar, uan, designation, depatrment, c_Leave, p_Leave, s_Leave, pan) " +
-	            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    String query = "INSERT INTO employee (empid, fullname, email, password, role, doj, esi, pf, ptax, hra, aadhar, uan, designation, depatrment, c_Leave, p_Leave, s_Leave, pan,gender,payslipSent) " +
+	            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 	    int esi=(int)ctcForm.getEmployeesContributionToESI();
 	   int hra= (int) ctcForm.getHouseRentAllowance();
 	   int pf = (int) ctcForm.getEmployeesContributionToPF();
@@ -28,7 +32,7 @@ public class Crud {
 	 statement.setBoolean(5, employee.isRole());
 	 statement.setString(6, employee.getDoj());
 	 statement.setInt(7, esi);
-	 statement.setInt(8, pf);
+	 statement.setInt(8, employee.getPf());
 	 statement.setInt(9, employee.getPtax());
 	 statement.setInt(10, hra);
 	 statement.setLong(11, employee.getAadhar());
@@ -39,22 +43,47 @@ public class Crud {
 	 statement.setInt(16, employee.getpLeave());
 	 statement.setInt(17, employee.getsLeave());
 	 statement.setString(18, employee.getPan());
-
+	 statement.setString(19, employee.getGenter());
+	 statement.setInt(20, 1);
 	 statement.executeUpdate();
-	 
+	 connection1.close();
 	}
-//	public void insertpayrollid(Employee employee ,Payroll payrollId) throws Exception {
-//		Connection conn = dao.getConnection();
-//		String query = "INSERT INTO PAYROLL(payrollid,empid,period,nettotal,grosstotal) VALUES (?,?,?,?,?)";
-//		PreparedStatement statement = conn.prepareStatement(query);
-//		statement.setInt(1, payrollId.getPayrollid());
-//		statement.setString(2, employee.getEmpid());
-//		statement.setString(3, payrollId.getPeriod());
-//		
-//		statement.executeUpdate();
-//		System.out.println("Payroll has been insterted successfully....");
-//		
-//	}
+	public  void insertpayrollid(String empid,int sal) throws Exception {
+		Connection conn = dao.getConnection();
+		LocalDate currentDate = LocalDate.now();
+		String query = "INSERT INTO payroll_db.payroll (empid, period, payslipSen, credited) VALUES (?, ?, ?, ?)";
+		PreparedStatement statement = conn.prepareStatement(query);
+		statement.setString(1,empid);
+		statement.setString(2, currentDate.toString());
+		statement.setInt(3, 1);
+		statement.setInt(4, sal);
+ 
+		statement.executeUpdate();
+		System.out.println("Payroll has been insterted successfully....");
+		conn.close();
+	}
+	
+	public Ctc getempctc(String empid) {
+		Connection conn = dao.getConnection();
+		String query="SELECT * FROM payroll_db.ctc where empid=? order by period desc limit 1";
+		Ctc ctc=null;
+		try {
+			PreparedStatement preparedStatement = conn.prepareStatement(query);
+			preparedStatement.setString(1, empid);
+			ResultSet resultSet=preparedStatement.executeQuery();
+			resultSet.next();
+			ctc=new Ctc();
+			ctc.setEmpid(resultSet.getString(2));
+			ctc.setPeriod(resultSet.getString(3));
+			ctc.setCtc(resultSet.getInt(4));
+			conn.close();
+			return ctc;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ctc;
+	}
 	public Employee getEmployeeDetails(String empid) throws Exception {
 	    Employee employee = null;
 	    Connection conn = dao.getConnection();
@@ -80,6 +109,10 @@ public class Crud {
 	        employee.setUan(rs.getString(13));
 	        employee.setDesignation(rs.getString(14));
 	        employee.setDepartment(rs.getString(15));
+	        employee.setGenter(rs.getString(16));
+	        employee.setcLeave(rs.getInt(17));
+	        employee.setsLeave(rs.getInt(18));
+	        employee.setpLeave(rs.getInt(19));
 	      
 	    }
 
@@ -103,7 +136,7 @@ public class Crud {
 	        employee.setRole(rs.getInt(5) != 0);
 	        employee.setDoj(rs.getString(6));
 	        employee.setEsi(rs.getInt(7));
-	        employee.setPf(rs.getInt(8));
+	       employee.setPf(rs.getInt(8));
 	        employee.setHra(rs.getInt(9));
 	        employee.setAadhar(rs.getInt(10));
 	        employee.setPan(rs.getString(11));
@@ -156,16 +189,25 @@ public class Crud {
 	    statement.setString(17, employee.getPan());
 	    statement.setString(18, employee.getEmpid());
 	    
-	   return statement.executeUpdate();
+	   int a=statement.executeUpdate();
+	   connection.close();
+	   return a;
 	}
 
 	public int deleteemp(String id) throws Exception, SQLException {
 		 String query = "DELETE FROM payroll_db.employee WHERE (empid = ?)";
+		 String query2= "DELETE FROM payroll_db.payroll WHERE (empid = ?)";
 		  Connection connection = new Dao().getConnection();
 		  
 		    PreparedStatement statement = connection.prepareStatement(query);
+		    PreparedStatement statement2 = connection.prepareStatement(query2);
+		    statement2.setString(1, id);
 		    statement.setString(1, id);
-		    return statement.executeUpdate();
+		    statement2.executeUpdate();
+		   
+		    int a= statement.executeUpdate();
+		    connection.close();
+		    return a;
 	}
 
 }

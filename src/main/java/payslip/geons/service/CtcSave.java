@@ -16,7 +16,7 @@ public class CtcSave {
 		preparedStatement.setDouble(3, ctc.getCtc());
 		
 		preparedStatement.executeUpdate();
-		
+		connection.close();
 		
 	}
 }
