@@ -1,0 +1,59 @@
+
+
+.content{
+	border: 2px solid black;
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top:10px;
+	height:590px;
+
+}
+
+h5{
+	margin-left: 20%;
+}
+.firstForm{
+	font-size: 20px;
+	margin-top: 7px;
+	margin-left:20px;
+	color:blue;
+	font-family: arial, sans-serif;
+}
+
+table{
+	font-family: arial, sans-serif;
+    border-collapse: collapse;
+	margin-left:50px;
+	margin-top:25px;
+	border: 1px solid #dddddd;
+	height: 120px;
+	
+}
+th{
+	background-color: orange;
+	color:white;
+
+}
+
+th,td{
+  
+  text-align: left;
+  padding: 8px;
+  border: 2px solid red;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+input{
+	border: 1px solid lightblue;
+	border-radius: 4px;
+}
+.fl{
+	text-align:center;
+}
+
+
+
+
