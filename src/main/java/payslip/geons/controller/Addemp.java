@@ -35,7 +35,7 @@ public class Addemp extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
+		//String name="hello"
 		boolean errorCheck = false;
 		HttpSession httpSession = request.getSession();
 		String empid =  request.getParameter("empid");
