@@ -1,7 +1,11 @@
 package payslip.geons.dto;
 
-public class Payroll {
+import java.io.Serializable;
 
+public class Payroll implements Serializable {
+
+
+	private static final long serialVersionUID = 1L;
 	private int payrollid;
 	private Employee employee;
 	private String empid;

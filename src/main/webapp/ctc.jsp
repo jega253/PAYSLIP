@@ -1,6 +1,9 @@
 <!doctype html>
-<%@page import="payslip.geons.service.CtcCalculation"%>
+<%@page import="payslip.geons.dto.Ctc"%>
 <%@page import="payslip.geons.dto.CtcForm"%>
+<%@page import="payslip.geons.service.CtcCalculation"%>
+ <%@page import="payslip.geons.dto.Employee"%>
+<%@page import="payslip.geons.dto.Payroll"%> 
 <html lang="en">
 <head>
  <%@page import="payslip.geons.dto.Employee"%>
@@ -155,6 +158,7 @@ button:focus {
 				</div>
 			</nav>
 			<div class="container">
+			 <form action="CtcController">
       <table class="table">
         <tr>
           <td
@@ -174,12 +178,14 @@ button:focus {
           <td colspan="2"> <%= emp.getDesignation()%></td>
         </tr>
         <tr>
-          <td></td>
-          <td style="text-align: center; background-color: rgb(172, 224, 248)">
+        <td style="text-align: center; background-color: rgb(172, 224, 248)">
             <b>CTC</b>
            
           </td>
-          <td><%= ctccal.getTotalGrossSalaryComponentsA()%></td>
+          <td colspan="2"><%= ctccal.getTotalGrossSalaryComponentsA()%></td>
+         
+          
+          
         </tr>
         <tr>
           <td style="background-color: rgb(172, 224, 248)">
@@ -271,8 +277,11 @@ button:focus {
           </td>
         </tr>
       </table>
-      <a href="#" class="btn btn-primary">Back</a>
-      <a href="CtcController" class="btn btn-primary" style="margin-left:80%; background-color:DodgerBlue;">Sumbit</a>
+      
+     
+      <button type="submit" class="btn btn-primary" style="margin-left:80%; background-color:DodgerBlue;">submit</button>
+      </form>
+     
       
       
      

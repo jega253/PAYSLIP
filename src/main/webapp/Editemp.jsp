@@ -3,16 +3,22 @@
  <%@page import="java.util.List"%>
  
  <%@page import="payslip.geons.dto.Employee"%>
-<%@page import="payslip.geons.dto.Payroll"%> 
+<%@page import="payslip.geons.dto.Payroll"%>
  <%@page import="java.util.ArrayList"%>
     <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%> <% HttpSession mysession = request.getSession();
     %>
 
 <!doctype html>
+<%
+    if (session.getAttribute("listofemployee") == null)  {
+        response.sendRedirect("LogoutServlet"); 
+    }
+%>
 <html lang="en">
   <head>
-  	<title>Admin Dash</title>
+  <link rel="icon" type="image/x-icon" href="image/geon.jpg">
+  	<title>Payroll</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -82,6 +88,9 @@
             box-shadow: none !important;
             outline-width: 0;
           }
+          #foot{
+		  padding-top:97%;
+		}
         </style>
 		
   </head>
@@ -89,7 +98,7 @@
 		
 		<div class="wrapper d-flex align-items-stretch">
 			<nav id="sidebar">
-				<div class="p-4 pt-3 ">
+				<div class="p-4 p-md-2 sticky-top">
 		  		<a href="#" class="img logo rounded-circle   mb-3" style="background-image: url(image/logopra.jpg);"></a>
 	        <ul class="list-unstyled components ">
 	          <li>
@@ -102,11 +111,14 @@
               <a href="Edit.jsp">Edit Emp</a>
 	          </li>
 	          <li>
+              <a href="Gross.jsp">Payslips</a>
+	          </li>
+	          <li>
               <a href="LogoutServlet">Signout</a>
 	          </li>
 	        </ul>
 
-	        <div class="footer">
+	        <div class="footer" id="foot">
 	        	<p>
 						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> ,Geons Logix.com<i class="icon-heart" aria-hidden="true"></i> by <a href="https://Geonslogix.com" target="_blank">Geonslogix.com</a>
 						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
@@ -116,9 +128,9 @@
     	</nav>
 
         <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-1">
+      <div id="content" class="p-4 p-md-0">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light  sticky-top">
           <div class="container-fluid">
 
             <button type="button" id="sidebarCollapse" class="btn btn-primary">
@@ -131,15 +143,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent" >
               <ul class="nav navbar-nav ml-auto ">
-                <li class="nav-item active">
-                    <a class="nav-link" href="admin.jsp">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="addEmp.jsp">Add Emp</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Edit.jsp">Edit Emp</a>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="LogoutServlet">Signout</a>
                 </li>
@@ -148,26 +152,13 @@
           </div>
         </nav>
         
-          <div class="row d-flex justify-content-center">
+          <div class=" justify-content-center">
             <div class="text-center">
               <div class="card">
-                <h5 class="text-center mb-1" style="color: #00bcd4">
-                  Edit Employee
-                </h5>
+              <span><img width="80" height="80"  src="image/edit.png" alt="edit emp logo" /></span>
+                 <h5 class="text-center" style="color: #00BCD4;">Edit Employee</h5> 
                 <form class="form-card" action="Editemp" method="post">
                   <div class="row justify-content-between text-left">
-                    <div class="form-group col-sm-6 flex-column d-flex">
-                      <label class="form-control-label px-3"
-                        >Employee id<span class="text-danger"> *</span></label
-                      >
-                      <input
-                        type="text"
-                        name="empid"
-                        id="empid"
-                        value="<%= ((Employee) session.getAttribute("editemp")).getEmpid() %>"
-                        onblur="validate(1)"
-                      />
-                    </div>
                     <div class="form-group col-sm-6 flex-column d-flex">
                       <label class="form-control-label px-3"
                         >Full Name<span class="text-danger"> *</span></label
@@ -180,8 +171,6 @@
                         onblur="validate(2)"
                       />
                     </div>
-                  </div>
-                  <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex">
                       <label class="form-control-label px-3"
                         >Email<span class="text-danger"> *</span></label
@@ -194,6 +183,9 @@
                         onblur="validate(3)"
                       />
                     </div>
+                  </div>
+                  <div class="row justify-content-between text-left">
+                    
                     <div class="form-group col-sm-6 flex-column d-flex">
                       <label class="form-control-label px-3"
                         >Doj<span class="text-danger"> *</span></label
@@ -206,23 +198,9 @@
                         onblur="validate(4)"
                       />
                     </div>
-                  </div>
-                  <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex">
                       <label class="form-control-label px-3"
-                        >ESI<span class="text-danger"> *</span></label
-                      >
-                      <input
-                        type="text"
-                        name="esi"
-                        id="esi"
-                        value="<%= ((Employee) session.getAttribute("editemp")).getEsi() %>"
-                        onblur="validate(5)"
-                      />
-                    </div>
-                    <div class="form-group col-sm-6 flex-column d-flex">
-                      <label class="form-control-label px-3"
-                        >PF<span class="text-danger"> *</span></label
+                        >PF No<span class="text-danger"> *</span></label
                       >
                       <input
                         type="text"
@@ -233,6 +211,7 @@
                       />
                     </div>
                   </div>
+    
                   <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex">
                       <label class="form-control-label px-3"
@@ -247,17 +226,12 @@
                       />
                     </div>
                     <div class="form-group col-sm-6 flex-column d-flex">
-                      <label class="form-control-label px-3"
-                        >Hra<span class="text-danger"> *</span></label
-                      >
-                      <input
-                        type="text"
-                        name="hra"
-                        id="hra"
-                        value="<%= ((Employee) session.getAttribute("editemp")).getHra() %>"
-                        onblur="validate(8)"
-                      />
-                    </div>
+									<label class="form-control-label px-3">UAN No<span
+										class="text-danger"> *</span></label> <input type="text"
+										name="uan" id="uan" value="<%= ((Employee) session.getAttribute("editemp")).getUan() %>"
+										placeholder="Enter uan no" onblur="validate(2)">
+								</div>
+                   
                   </div>
                   <!-- <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
@@ -288,13 +262,13 @@
                       <label class="form-control-label px-3"
                         >Designation<span class="text-danger"> *</span></label
                       >
-                      <input
-                        type="text"
-                        name="designation"
-                        id="designation"
-                        value="<%= ((Employee) session.getAttribute("editemp")).getDesignation() %>"
-                        onblur="validate(10)"
-                      />
+                      <select  name="designation" id="designation"  style="height:50px; 
+										margin-top:3px;"  >
+										 <option value="" ><%= ((Employee) session.getAttribute("editemp")).getDesignation() %></option>
+                                         <option value="Training Developer" >Training Developer</option>
+                                         <option value="Junior Developer">Junior Developer</option>
+                                         <option value="Senior Developer">Senior Developer</option>
+                                    </select>
                     </div>
                   </div>
                   <div class="row justify-content-between text-left">
@@ -302,13 +276,13 @@
                       <label class="form-control-label px-3"
                         >Department<span class="text-danger"> *</span></label
                       >
-                      <input
-                        type="text"
-                        name="depatrment"
-                        id="depatrment"
-                        value="<%= ((Employee) session.getAttribute("editemp")).getDepartment() %>"
-                        onblur="validate(11)"
-                      />
+                      <select  name="department" id="department"  style="height:50px; 
+										margin-top:3px;">
+										 <option value=""><%= ((Employee) session.getAttribute("editemp")).getDepartment() %></option>
+                                         <option value="CSE" >CSE</option>
+                                         <option value="MECH">MECH</option>
+                                         <option value="MCA">MCA</option>
+                                    </select>
                     </div>
                     <div class="form-group col-sm-6 flex-column d-flex">
                       <label class="form-control-label px-3"
@@ -323,6 +297,29 @@
                       />
                     </div>
                   </div>
+                  <div class="row justify-content-between text-left">
+								<div class="form-group col-sm-6 flex-column d-flex">
+									<label class="form-control-label px-3">Casual Leave<span
+										class="text-danger"> *</span></label> <input type="text" name="cLeave"
+										id="cLeave"  value="<%= ((Employee) session.getAttribute("editemp")).getcLeave()%>"
+										onblur="validate(11)">
+								</div>
+								<div class="form-group col-sm-6 flex-column d-flex">
+									<label class="form-control-label px-3">Sick Leave<span
+										class="text-danger"> *</span></label> <input type="text"
+										name="sLeave" id="sLeave" value="<%= ((Employee) session.getAttribute("editemp")).getsLeave() %>"
+										 onblur="validate(12)">
+								</div>
+							</div>
+							<div class="row justify-content-between text-left">
+								<div class="form-group col-sm-6 flex-column d-flex">
+									<label class="form-control-label px-3">Privilege Leave<span
+										class="text-danger"> *</span></label> <input type="text" name="pLeave"
+										id="pLeave"  value="<%= ((Employee) session.getAttribute("editemp")).getpLeave() %>"
+										onblur="validate(13)">
+								</div>
+								
+							</div>
                  
                  
                   <div class="row justify-content-end">
@@ -344,6 +341,7 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+    
   </body>
 </html>
         

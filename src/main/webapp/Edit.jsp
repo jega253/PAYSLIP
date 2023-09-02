@@ -1,5 +1,5 @@
 <%@page import="java.util.List"%>
-<%@page import="payslip.geons.dto.Employee"%>
+ <%@page import="payslip.geons.dto.Employee"%>
 <%@page import="payslip.geons.dto.Payroll"%>
 <%@page import="java.util.ArrayList"%>
 
@@ -7,10 +7,18 @@
     pageEncoding="ISO-8859-1"%>
     
   <% HttpSession mysession = request.getSession(); %>
+  
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  	<title>Admin Dash</title>
+	 <%
+    if (mysession.getAttribute("listofemployee") == null)  {
+        response.sendRedirect("login.jsp"); 
+    }
+%>
+  	<link rel="icon" type="image/x-icon" href="image/geon.jpg">
+  	<title>Payroll</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -18,6 +26,7 @@
 		
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/style.css">
+		            
 		<style>
 		
 		table{
@@ -70,7 +79,7 @@ input:focus, textarea:focus {
 	text-transform: uppercase;
 	font-size: 15px !important;
 	font-weight: 400;
-	height: 43px;
+	height: 40px;
 	cursor: pointer
 }
 
@@ -84,13 +93,19 @@ button:focus {
 	box-shadow: none !important;
 	outline-width: 0
 }
+#foot{
+		  padding-top:85%;
+		}
 </style>
-		
+                                <!--  ----------import the package------  -->
+         
+         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+       
   </head>
 <body>
     <div class="wrapper d-flex align-items-stretch">
 			<nav id="sidebar">
-				<div class="p-4 pt-3">
+				<div class="p-4 p-md-2  sticky-top">
 		  		<a href="#" class="img logo rounded-circle  mb-3" style="background-image: url(image/logopra.jpg);"></a>
 	        <ul class="list-unstyled components mb-5">
 	        <li>
@@ -103,11 +118,14 @@ button:focus {
               <a href="Edit.jsp" data-toggle="collapse" aria-expanded="false">Edit Emp</a>
 	          </li>
 	          <li>
+              <a href="Gross.jsp">Payslips</a>
+	          </li>
+	          <li>
               <a href="LogoutServlet">Signout</a>
 	          </li>
 	        </ul>
 
-	        <div class="footer">
+	        <div class="footer" id="foot">
 	        	<p>
 						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> ,Geons Logix.com<i class="icon-heart" aria-hidden="true"></i> by <a href="https://Geonslogix.com" target="_blank">Geonslogix.com</a>
 						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
@@ -117,9 +135,9 @@ button:focus {
     	</nav>
 
         <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-1">
+      <div id="content" class="p-4 p-md-0">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light  sticky-top">
           <div class="container-fluid">
 
             <button type="button" id="sidebarCollapse" class="btn btn-primary">
@@ -141,21 +159,24 @@ button:focus {
           </div>
         </nav>
          <!-- edit  -->
-		<div class="table-responsive small">
+         <h5 class="text-center" style="color: #00BCD4;">Edit Employee</h5>
+		<div class="table-responsive small container ">
       
-      <table class="table">
+      <table class="table" id="editemp" >
          <thead class="thead-light">
            <tr>
-              <th scope="col-2">SB</th>
-              <th scope="col-2">Employee ID</th>
-              <th scope="col-2">Name</th>
-              <th scope="col-2">Designation</th>
-              <th scope="col-2">PayslipSent</th>
-             <th scope="col-2">Actions</th>
+              <th scope="col">SNO</th>
+              <th scope="col">Employee ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Designation</th>
+              <th scope="col">Department</th>
+             <th scope="col">Actions</th>
              
            </tr>  
          </thead>     
           
+    <tbody>
          
   <% List data=(List) mysession.getAttribute("listofemployee");
   
@@ -166,19 +187,15 @@ button:focus {
   {  
    Employee emp= (Employee)data.get(i);
     %>
-    <tbody>
+    
       <tr>
    
  <td width="119"><%=i+1%></td>
 	<td width="119"><%=emp.getEmpid()%></td>
 	<td width="168"><%=emp.getFullname()%></td>
+	<td width="119"><%=emp.getGenter()   %>
 	<td width="119"><%=emp.getDesignation()%></td>
-	<td>
-	<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256"
-style="fill:#000000;">
-<g fill="#94d82d" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M11,16.4l-4.7,-4.7l1.4,-1.4l3.3,3.3l8.4,-8.4c-1.9,-1.9 -4.5,-3.2 -7.4,-3.2c-5.5,0 -10,4.5 -10,10c0,5.5 4.5,10 10,10c5.5,0 10,-4.5 10,-10c0,-1.9 -0.5,-3.6 -1.4,-5.1z"></path></g></g>
-</svg>
-</td>
+		<td width="119"><%=emp.getDepartment()%></td>
 	<td>
 	<a href="Editemp?empid=<%=emp.getEmpid()%>"  
 	 >
@@ -195,9 +212,9 @@ style="fill:#000000;">
 </a>
 </td>  
   </tr>
-  </tbody>
+  
   <%}%>
-    
+    </tbody>
      </table>
 
       </div>
@@ -209,4 +226,14 @@ style="fill:#000000;">
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+                           <!--  ----------import the package------  -->
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+      <script>
+      
+      $('#editemp').DataTable();
+      
+      </script>
+    
 </html>

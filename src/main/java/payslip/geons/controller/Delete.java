@@ -25,20 +25,14 @@ public class Delete extends HttpServlet {
 			int result = new Crud().deleteemp(id);
 			
 			if(result==1) {
-				httpSession.removeAttribute("listofemployee");
+				
 				Payslipgen payslipgen = new Payslipgen();
 				List<Employee> employees=null;
-				try {
-					Employee currentemp=(Employee)httpSession.getAttribute("name");
-					employees = payslipgen.allEmployee(currentemp.getEmpid());
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Employee currentemp=(Employee)httpSession.getAttribute("name");
+				employees = payslipgen.allEmployee(currentemp.getEmpid());
 				httpSession.setAttribute("listofemployee", employees);
 				response.sendRedirect("Edit.jsp");
 			}
-			
 			
 			
 		} catch (Exception e) {

@@ -57,7 +57,10 @@
                           id="form2Example17"
                           class="form-control form-control-lg"
                           name="username"
-                          
+                          value="<%if(request.getAttribute("username")!=null) {
+						        	  out.print(request.getAttribute("username"));
+						          }
+						          %>"
                         />
                         <label class="form-label" for="form2Example17"
                           >Username</label
@@ -83,7 +86,13 @@
                           type="submit" value="Login"
                         >
                           Login
-                        </button>
+					    </button>
+					  <% if (request.getAttribute("error")!=null) { %>
+					  <br>
+					  <br>
+					 
+					  <h6 style="color: red;"><%=request.getAttribute("error") %></h6>
+					<% } %>
                       </div>
 
                       <a class="small text-muted" href="#!">Forgot password?</a>
@@ -98,7 +107,7 @@
     </section>
     
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script type="text/javascript">
+   <script type="text/javascript">
     function validate(form)
     {
       var name = document.myform.username.value;
@@ -112,19 +121,7 @@
          
         return false;
         }
-      else
-      {
-        swal({
-            icon: "success",
-            title:"Successfully Login."
-          })
-         .then((isOkay) => {
-           if(isOkay) {
-             form.submit();
-           }
-         });
-        return false;
-      }
+     
     } 
    
     </script>

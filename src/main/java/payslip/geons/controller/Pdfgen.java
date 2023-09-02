@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,39 +26,28 @@ import payslip.geons.service.EmployeeModel;
 @WebServlet("/pdfgen")
 public class Pdfgen extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Employee employee2=(Employee) session.getAttribute("name");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String period = request.getParameter("period");
+		double credited = Double.parseDouble(request.getParameter("credited"));
 		
-		String id=employee2.getEmpid();
-		CtcForm ctcForm=null;
-		EmployeeModel employeeModel =new EmployeeModel();
-		try {
-			List<String> list=employeeModel.getlastmonthpayslip(id);
-			String ctc=list.get(0);
-			String period = list.get(1);
-			 String inputDate = period;
-			CtcCalculation calculation = new CtcCalculation(Double.parseDouble(ctc));
-			 ctcForm =calculation.ctcCalculation();
-		        LocalDate date = LocalDate.parse(inputDate);
-		        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMMM yyyy");
-		        String outputDate = date.format(outputFormat).toUpperCase();
-		       
-	
-		       
-		        session.setAttribute("month", outputDate);
-		       
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute("pay", ctcForm);
-		response.sendRedirect("payslip.jsp");
+		CtcCalculation calculation = new CtcCalculation(credited*12);
+		
+		CtcForm ctcForm=calculation.ctcCalculation();
+		
+		HttpSession httpSession = request.getSession(false);
+		httpSession.setAttribute("pay", ctcForm);
+		String month=monthConverter(period);
+		httpSession.setAttribute("month", month);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("payslip.jsp");
+		dispatcher.forward(request, response);
 	}
-
-	
-
+	public String monthConverter(String month) {
+		 String dateString = month;
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        LocalDate date = LocalDate.parse(dateString, formatter);
+	        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM");
+	        return date.format(monthFormatter);
+	}
 }

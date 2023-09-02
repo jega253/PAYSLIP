@@ -1,7 +1,27 @@
+<%@page import="payslip.geons.dto.Ctc"%>
+<%@page import="java.util.List"%>
+ 
+ <%@page import="payslip.geons.dto.Employee"%>
+<%@page import="payslip.geons.dto.Payroll"%>
+ <%@page import="java.util.ArrayList"%>
+ <%@page import="payslip.geons.dto.Employee"%>
 <!doctype html>
 <html lang="en">
 <head>
-<title>Admin Dash</title>
+<% if(request.getSession().getAttribute("listofemployee") == null){%>
+	<%response.sendRedirect("login.jsp"); %>
+<% }%>
+<%HttpSession httpSession = request.getSession();%>
+ <% HttpSession mysession = request.getSession();%>
+<%List <Employee> employees=(List)mysession.getAttribute("listofemployee"); 
+int lastIndex=employees.size()-1;
+Employee employee=(Employee)employees.get(lastIndex);
+Employee addedemp=(Employee)request.getAttribute("checkEmp");
+double ctc=0;
+%>
+
+<link rel="icon" type="image/x-icon" href="image/geon.jpg">
+  	<title>Payroll</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -61,7 +81,7 @@ input:focus, textarea:focus {
 	text-transform: uppercase;
 	font-size: 15px !important;
 	font-weight: 400;
-	height: 43px;
+	height: 40px;
 	cursor: pointer
 }
 
@@ -75,24 +95,30 @@ button:focus {
 	box-shadow: none !important;
 	outline-width: 0
 }
+#foot{
+		  padding-top:95%;
+		}
 </style>
 </head>
 <body>
 	
 	<div class="wrapper d-flex align-items-stretch">
 		<nav id="sidebar">
-			<div class="p-4 pt-3 ">
+			<div class="p-4 p-md-2 sticky-top">
 				<a href="#" class="img logo rounded-circle  mb-3"
-					style="background-image: url(image/geon.jpg);"></a>
+					style="background-image: url(image/logopra.jpg);"></a>
 				<ul class="list-unstyled components ">
 					<li><a href="admin.jsp">Home</a></li>
 					<li class="active"><a href="addEmp.jsp" data-toggle="collapse"
 						aria-expanded="false">Add Emp</a></li>
 					<li><a href="Edit.jsp">Edit Emp</a></li>
+					 <li>
+              <a href="Gross.jsp">Payslips</a>
+	          </li>
 					<li><a href="LogoutServlet">Signout</a></li>
 				</ul>
 
-				<div class="footer">
+				<div class="footer" id="foot">
 					<p>
 						Copyright &copy;
 						<script>
@@ -107,156 +133,219 @@ button:focus {
 		</nav>
 
 		<!-- Page Content  -->
-		<div id="content" class="p-4 p-md-1">
+		 <div id="content" class="p-4 p-md-0">
 
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light  sticky-top">
+          <div class="container-fluid">
 
-					<button type="button" id="sidebarCollapse" class="btn btn-primary">
-						<i class="fa fa-bars"></i> <span class="sr-only">Toggle
-							Menu</span>
-					</button>
-					<button class="btn btn-dark d-inline-block d-lg-none ml-auto"
-						type="button" data-toggle="collapse"
-						data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false"
-						aria-label="Toggle navigation">
-						<i class="fa fa-bars"></i>
-					</button>
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+              <i class="fa fa-bars"></i>
+              <span class="sr-only">Toggle Menu</span>
+            </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
 
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="nav navbar-nav ml-auto">
-							
-							<li class="nav-item"><a class="nav-link" href="LogoutServlet">Signout</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+              <ul class="nav navbar-nav ml-auto ">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="LogoutServlet">Signout</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
 			<!--    -------addEmp---   -->
-			<div class="row d-flex justify-content-center body">
+			<div class=" mt-0 justify-content-center body">
 				<div class="text-center">
 
 					<div class="card">
-						<h5 class="text-center " style="color: #00BCD4;">Add Employee</h5>
+					 <span><img width="80" height="80"  src="image/add.png" alt="addemp logo" /></span>
+						<h5 class="text-center" style="color: #00BCD4;">Add Employee</h5>
 						
 						
-						<form class="form-card" action="addemp" method="post"
+						<form class="form-card" action="addemp" method="post" name = "form1"
 							style="background-color: light-gray;">
-
+									
 
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Employee id<span
+									<label class="form-control-label px-1">Employee id<span
 										class="text-danger"> *</span></label> <input type="text" name="empid"
-										id="empid" placeholder="Enter employee id"
-										onblur="validate(1)">
+										id="empid" placeholder="Enter employee id" value=<%=employee.getNextnumber() %>  onblur="validate(1)">
+										<% if(null!=request.getAttribute("empid")) 
+										{
+											%>
+											<p class="text-danger"><%= request.getAttribute("empid")%></p>
+											<%
+										}
+										%>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Full Name<span
+									<label class="form-control-label px-1">Employee Name<span
 										class="text-danger"> *</span></label> <input type="text"
 										name="fullname" id="fullname"
-										placeholder="Enter employee name" onblur="validate(2)">
+										placeholder="Enter employee name" onblur="validate(2)" value=<%=(addedemp!=null)?(addedemp.getFullname()!=null)?addedemp.getFullname():" ":" " %>>
 								</div>
 							</div>
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Email<span
+									<label class="form-control-label px-1">Email<span
 										class="text-danger"> *</span></label> <input type="text" name="email"
-										id="email" placeholder="Enter email" onblur="validate(3)">
+										id="email" placeholder="Enter email" onblur="validate(3)" name = 'text1' value=<%=(addedemp!=null)?(addedemp.getEmail()!=null)?addedemp.getEmail():"":"" %>>
+										<% if(null!=request.getAttribute("email")) 
+										{
+											%>
+											<p class="text-danger"><%= request.getAttribute("email")%></p>
+											<%
+										}
+										%>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Doj<span
-										class="text-danger"> *</span></label> <input type="text" name="doj"
-										id="doj" placeholder="Enter Doj" onblur="validate(4)">
+									<label class="form-control-label px-1">Doj<span
+										class="text-danger"> *</span></label> <input type="date" name="doj"
+										id="doj" placeholder="Enter Doj" onblur="validate(4)"value=<%=(addedemp!=null)?(addedemp.getDoj()!=null)?addedemp.getDoj():"":"" %>>
 								</div>
 							</div>
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">PTax<span
-										class="text-danger"> *</span></label> <input type="text" name="ptax"
-										id="ptax" placeholder="Enter Ptax" onblur="validate(5)">
+									<label class="form-control-label px-1">Role<span
+										class="text-danger"> *</span></label>
+										<select  name="role" id="role" style="height:50px; 
+										margin-top:3px;">
+										
+                                         <option value="0" >Admin</option>
+                                         <option value="1">User</option>
+                                    </select>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">PF<span
-										class="text-danger"> *</span></label> <input type="text" name="pf"
-										id="pf" placeholder="Enter Pf" onblur="validate(6)">
+									<label class="form-control-label px-1">Gender<span
+										class="text-danger"> *</span></label> 
+										<select  name="gender" id="gender" style="height:50px; 
+										margin-top:3px;">
+                                         <option value="Male"><%=(addedemp!=null)?(addedemp.getGenter()!=null)?addedemp.getGenter():"Male":"Male" %></option>
+                                         <option value="Female">Female</option>
+                                    </select>
 								</div>
 							</div>
 
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Aadhar<span
+									<label class="form-control-label px-1">Aadhar<span
 										class="text-danger"> *</span></label> <input type="text" name="aadhar"
-										id="aadhar" placeholder="Enter aadhar" onblur="validate(7)">
+										id="aadhar" placeholder="Enter aadhar"  onblur="validate(5)" value=<%=(addedemp!=null)?(addedemp.getAadhar()!=0)?addedemp.getAadhar():0:0 %>>
+										<span id="messages"></span>
+										<% if(null!=request.getAttribute("aadhar")) 
+										{
+											%>
+											<p class="text-danger"><%= request.getAttribute("aadhar")%></p>
+											<%
+										}
+										%>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Designation<span
+									<label class="form-control-label px-1">Designation<span
 										class="text-danger"> *</span></label>
-										<select  name="designation" id="designation" onblur="validate(8)" style="height:50px; 
+										<select  name="designation" id="designation"  style="height:50px; 
 										margin-top:3px;">
-										 <option value="" style="text-align:center;">--choose----</option>
-                                         <option value="Training Developer" style="text-align:center;">Training Developer</option>
-                                         <option value="Junior Developer" style="text-align:center;">Junior Developer</option>
-                                         <option value="Senior Developer" style="text-align:center;">Senior Developer</option>
+                                         <option value="Training Developer" ><%=(addedemp!=null)?(addedemp.getDesignation()!=null)?addedemp.getDesignation():"Training Developer":"Training Developer" %></option>
+                                         <option value="Junior Developer">Junior Developer</option>
+                                         <option value="Senior Developer">Senior Developer</option>
                                     </select>
 								</div>
 							</div>
-							<div class="row justify-content-between text-left">
+							<div class="row justify-content-between text-left form-group ">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Department<span
+									<label class="form-control-label px-1">Department<span
 										class="text-danger"> *</span></label> 
-										<select  name="department" id="department" onblur="validate(9)" style="height:50px; 
+										<select  name="department" id="department" style="height:50px; 
 										margin-top:3px;">
-										 <option value="" style="text-align:center;">--choose----</option>
-                                         <option value="CSE" style="text-align:center;">CSE</option>
-                                         <option value="MECH" style="text-align:center;">MECH</option>
-                                         <option value="MCA" style="text-align:center;">MCA</option>
+                                         <option value="CSE" ><%=(addedemp!=null)?(addedemp.getDepartment()!=null)?addedemp.getDepartment():"CSE":"CSE" %></option>
+                                         <option value="MECH">MECH</option>
+                                         <option value="MCA">MCA</option>
                                     </select>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">PAN<span
+									<label class="form-control-label px-1">PAN<span
 										class="text-danger"> *</span></label> <input type="text"
 										name="pan" id="pan" placeholder="Enter Pan number"
-										onblur="validate(10)">
+										onblur="validate(6)"value=<%=(addedemp!=null)?(addedemp.getPan()!=null)?addedemp.getPan():"":"" %>>
+										<% if(null!=request.getAttribute("pan")) 
+										{
+											%>
+											<p class="text-danger"><%= request.getAttribute("pan")%></p>
+											<%
+										}
+										%>
 								</div>
 							</div>
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Casual Leave<span
+									<label class="form-control-label px-1">Casual Leave<span
 										class="text-danger"> *</span></label> <input type="text" name="cLeave"
 										id="cLeave" placeholder="Enter cLeave"
-										onblur="validate(11)">
+										onblur="validate(7)" value=<%=(addedemp!=null)?(addedemp.getcLeave()!=0)?addedemp.getcLeave():0:0 %>>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Sick Leave<span
+									<label class="form-control-label px-1">Sick Leave<span
 										class="text-danger"> *</span></label> <input type="text"
 										name="sLeave" id="sLeave"
-										placeholder="Enter sLeave" onblur="validate(12)">
+										placeholder="Enter sLeave" onblur="validate(8)" value=<%=(addedemp!=null)?(addedemp.getsLeave()!=0)?addedemp.getsLeave():0:0%>>
 								</div>
 							</div>
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Privilege Leave<span
+									<label class="form-control-label px-1">Privilege Leave<span
 										class="text-danger"> *</span></label> <input type="text" name="pLeave"
 										id="pLeave" placeholder="Enter pLeave"
-										onblur="validate(13)">
+										onblur="validate(9)" value=<%=(addedemp!=null)?(addedemp.getpLeave()!=0)?addedemp.getpLeave():0:0 %>>
 								</div>
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">CTC<span
+									<label class="form-control-label px-1">CTC<span
 										class="text-danger"> *</span></label> <input type="text"
 										name="ctc" id="ctc"
-										placeholder="Enter ctc" onblur="validate(14)">
+										placeholder="Enter ctc" onblur="validate(10)" value=<%=(ctc!=0)?ctc:0 %>>
+								</div>
+							</div>
+							<div class="row justify-content-between text-left">
+								<div class="form-group col-sm-6 flex-column d-flex">
+									<label class="form-control-label px-1">PF No<span
+										class="text-danger"> *</span></label> <input type="text" name="pf"
+										id="pf" placeholder="Enter pf no"
+										onblur="validate(11)" value=<%=(addedemp!=null)?(addedemp.getPf()!=0)?addedemp.getPf():0:0 %>>
+										<% if(null!=request.getAttribute("pf")) 
+										{
+											%>
+											<p class="text-danger"><%= request.getAttribute("pf")%></p>
+											<%
+										}
+										%>
+								</div>
+								<div class="form-group col-sm-6 flex-column d-flex">
+									<label class="form-control-label px-1">UAN No<span
+										class="text-danger"> *</span></label> <input type="text"
+										name="uan" id="uan"
+										placeholder="Enter uan no" onblur="validate(12)" value=<%=(addedemp!=null)?(addedemp.getUan()!=null)?addedemp.getUan():"":"" %>>
+										<% if(null!=request.getAttribute("uan")) 
+										{
+											%>
+											<p class="text-danger"><%= request.getAttribute("uan")%></p>
+											<%
+										}
+										%>
 								</div>
 							</div>
 							
+							
 							<div class="row justify-content-between text-left">
 								<div class="form-group col-sm-6 flex-column d-flex">
-									<label class="form-control-label px-3">Password<span
+									<label class="form-control-label px-1">Password<span
 										class="text-danger"> *</span></label> <input type="password" name="password"
-										id="password" 
-										onblur="validate(15)">
+										id="password" value="welcome@123"
+										onblur="validate(13)">
 								</div>
+								
 							</div>
 		                  
 							
@@ -267,6 +356,7 @@ button:focus {
 								</div>
 							</div>
 						</form>
+					
 					</div>
 				</div>
 			</div>
@@ -277,7 +367,10 @@ button:focus {
 <script src="js/popper.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
-		
+		                  <!-- Mail Format -->
+  	
+   
+  
 </body>
 
 </html>
