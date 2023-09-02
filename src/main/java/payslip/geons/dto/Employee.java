@@ -28,6 +28,8 @@ public class Employee implements Serializable {
 	private boolean payslipSent;
 	private List<Payroll> payrollist;
 	private String nextnumber;
+
+	private int a;
 	
 	public String getNextnumber() {
 		return nextnumber;
