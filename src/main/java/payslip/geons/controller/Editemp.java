@@ -47,27 +47,30 @@ public class Editemp extends HttpServlet {
 		String password =  request.getParameter("password");
 
 		String doj = (String) request.getParameter("doj");
-		String esi = request.getParameter("esi");
+	//	String esi = request.getParameter("esi");
 
 		String pf = request.getParameter("pf");
 		String ptax = request.getParameter("ptax");
-		boolean role= false;
-		if(request.getParameter("role").equals("true")) {
-				role = true;
-		}
+//		boolean role= false;
+//		if(request.getParameter("role").equals("true")) {
+//				role = true;
+//		}
 		String aadhar = request.getParameter("aadhar");
 
 		String designation =  request.getParameter("designation");
 		String depatrment =  request.getParameter("depatrment");
-
+		
+		int cLeave = Integer.parseInt(request.getParameter("cLeave"));
+		int sLeave = Integer.parseInt(request.getParameter("sLeave"));
+		int pLeave = Integer.parseInt(request.getParameter("pLeave"));
 		Employee employee = new Employee();
 		employee.setEmpid(editemployee.getEmpid());
 		employee.setFullname(fullname);
 		employee.setEmail(email);
 		employee.setPassword(password);
-		employee.setRole(role);
+		//employee.setRole(role);
 		employee.setDoj(doj);
-		employee.setEsi(Integer.parseInt(esi));
+	//	employee.setEsi(Integer.parseInt(esi));
 		employee.setPf(Integer.parseInt(pf));
 		employee.setPtax(Integer.parseInt(ptax));
 		employee.setHra(editemployee.getHra());
@@ -76,6 +79,9 @@ public class Editemp extends HttpServlet {
 		employee.setDesignation(designation);
 		employee.setDepartment(depatrment);
 		employee.setGenter(editemployee.getGenter());
+		employee.setcLeave(cLeave);
+		employee.setpLeave(pLeave);
+		employee.setsLeave(sLeave);
 		Crud crud = new Crud();
 		try {
 			if (crud.updateEmpDetails(employee) == 1) {
